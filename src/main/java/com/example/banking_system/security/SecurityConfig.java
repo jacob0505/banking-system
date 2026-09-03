@@ -25,11 +25,12 @@ public class SecurityConfig {
         http
         .cors(cors -> cors.configurationSource(request -> {
             var config = new org.springframework.web.cors.CorsConfiguration();
-            config.setAllowedOrigins(java.util.List.of(
-            	    "http://localhost:3000",
-            	    "https://banking-frontend-production.up.railway.app",
-            	    "https://banking-frontend-production-8ed4.up.railway.app"
-            	));
+            config.setAllowedOriginPatterns(java.util.List.of(
+                "http://localhost:3000",
+                "https://banking-frontend-production.up.railway.app",
+                "https://banking-frontend-production-8ed4.up.railway.app",
+                "https://*.vercel.app"
+            ));
             config.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE"));
             config.setAllowedHeaders(java.util.List.of("*"));
             return config;
@@ -42,7 +43,6 @@ public class SecurityConfig {
                 .requestMatchers("/", "/index.html", "/*.js", "/*.css").permitAll()
                 .anyRequest().authenticated())
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 
